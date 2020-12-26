@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -30,6 +31,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    buildFeatures {
+        dataBinding = true
+    }
 }
 
 dependencies {
@@ -42,4 +47,54 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+    // ktx
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+
+    // Koin for Android
+    def koin_version = "2.1.6"
+    implementation "org.koin:koin-android:$koin_version"
+    // or Koin for Lifecycle scoping
+    implementation "org.koin:koin-androidx-scope:$koin_version"
+    // or Koin for Android Architecture ViewModel
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    // or Koin for Android Fragment Factory (unstable version)
+    implementation "org.koin:koin-androidx-fragment:$koin_version"
+
+
+    //    Timber logging
+    implementation group: 'com.jakewharton.timber', name: 'timber', version: '4.7.1'
+
+
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    // https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
+    implementation group: 'com.squareup.retrofit2', name: 'retrofit', version: '2.6.1'
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.7.2'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.7.2'
+
+
+    // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core
+    implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: '1.4.2'
+
+
+//    Glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    kapt 'com.github.bumptech.glide:compiler:4.10.0'
+
+    // Navigation
+    def nav_version = "2.3.2"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    //Database
+    def room = "2.2.6"
+    implementation "androidx.room:room-runtime:$room"
+    kapt "androidx.room:room-compiler:$room"
+    implementation "androidx.room:room-ktx:$room"
+    implementation "net.zetetic:android-database-sqlcipher:4.3.0"
 }
