@@ -24,10 +24,10 @@ class MatchesRepository(
                 Timber.d("flow collect")
                 if (it?.isEmpty() == true) {
                     Timber.d("flow loading")
-                    flow.emit(Resource.loading(null))
+                    flow.emit(Resource.Loading(null))
                 } else {
                     Timber.d("flow success")
-                    flow.emit(Resource.success(it))
+                    flow.emit(Resource.Success(it))
                 }
             }
         }
@@ -53,7 +53,7 @@ class MatchesRepository(
             }
         } catch (exception: Exception) {
             Timber.d("flow $exception")
-            flow.emit(Resource.error(null, exception.message ?: "error"))
+            flow.emit(Resource.Error(exception.message ?: "error"))
             currentCoroutineContext().cancel(null)
         } catch (cancellationException: CancellationException) {
             Timber.e("flow, cancellation exception $cancellationException")

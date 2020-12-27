@@ -9,7 +9,7 @@ import com.example.vivah.databinding.ActivityMatchesBinding
 import com.example.vivah.extensions.visible
 import com.example.vivah.ui.base.BaseActivity
 import com.example.vivah.ui.base.BaseViewModel
-import com.example.vivah.util.Status
+import com.example.vivah.util.Resource
 import org.koin.android.ext.android.inject
 
 class MatchesActivity : BaseActivity<ActivityMatchesBinding>() {
@@ -39,19 +39,18 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>() {
 
     private fun fetchMatches() {
         viewModel.getMatches().observe(this, {
-
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     viewModel.showProgressBar.value = false
                     viewBinding?.matchesRecyclerView?.visible()
                     matchesAdapter.updateList(it.data)
                     Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     viewModel.showProgressBar.value = false
-                    Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "${it.message}", Toast.LENGTH_SHORT).show()
                 }
-                Status.LOADING -> {
+                is Resource.Loading -> {
                 }
             }
         })
