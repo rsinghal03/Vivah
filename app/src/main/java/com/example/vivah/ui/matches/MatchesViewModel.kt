@@ -7,13 +7,18 @@ import com.example.vivah.repository.MatchesRepository
 import com.example.vivah.ui.base.BaseViewModel
 import com.example.vivah.util.Resource
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class MatchesViewModel(private val matchesRepository: MatchesRepository) : BaseViewModel() {
 
-
-    fun getMatches(): LiveData<Resource<List<Matches>?>> {
+    init {
+        Timber.d("flow init")
         showProgressBar.value = true
         matchesRepository.getMatches()
+    }
+
+    fun getMatches(): LiveData<Resource<List<Matches>?>> {
+        Timber.d("flow getMatches")
         return matchesRepository.flow.asLiveData()
     }
 

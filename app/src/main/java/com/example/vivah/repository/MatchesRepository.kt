@@ -15,13 +15,13 @@ class MatchesRepository(
     private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
 ) {
 
-    val flow = MutableSharedFlow<Resource<List<Matches>?>>()
+    val flow = MutableSharedFlow<Resource<List<Matches>?>>(replay = 1)
 
     fun getMatches() {
         coroutineScope.launch { refresh() }
         coroutineScope.launch {
+            Timber.d("flow collect")
             matchesDao.getDistinctLiveListOfMatches().collect {
-                Timber.d("flow collect")
                 if (it?.isEmpty() == true) {
                     Timber.d("flow loading")
                     flow.emit(Resource.Loading(null))
@@ -49,11 +49,13 @@ class MatchesRepository(
                     it.location.state
                 )
             }.also {
+                Timber.d("flow insert into db")
                 matchesDao.insertAllMatches(it)
             }
         } catch (exception: Exception) {
             Timber.d("flow $exception")
-            flow.emit(Resource.Error(exception.message ?: "error"))
+            if (flow.replayCache[0] !is Resource.Success)
+                flow.emit(Resource.Error(exception.message ?: "error"))
             currentCoroutineContext().cancel(null)
         } catch (cancellationException: CancellationException) {
             Timber.e("flow, cancellation exception $cancellationException")

@@ -24,7 +24,6 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        baseViewModel = getViewModel()
         activityBaseBinding = DataBindingUtil.setContentView(this, R.layout.activity_base)
         activityBaseBinding?.executePendingBindings()
         activityBaseBinding?.lifecycleOwner = this
@@ -35,6 +34,7 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity() {
             false
         )
         activityBaseBinding?.layoutContainer?.addView(viewBinding?.root)
+        baseViewModel = getViewModel()
         initObserver()
     }
 
