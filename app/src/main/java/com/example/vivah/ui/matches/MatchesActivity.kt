@@ -10,13 +10,13 @@ import com.example.vivah.extensions.visible
 import com.example.vivah.ui.base.BaseActivity
 import com.example.vivah.ui.base.BaseViewModel
 import com.example.vivah.util.Resource
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MatchesActivity : BaseActivity<ActivityMatchesBinding>() {
 
-    private val viewModel: MatchesViewModel by inject()
+    private val viewModel: MatchesViewModel by viewModel()
 
-    override var getViewModel: BaseViewModel = viewModel
+    override fun getViewModel(): BaseViewModel = viewModel
 
     override var layoutId: Int = R.layout.activity_matches
 
@@ -33,8 +33,10 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>() {
             layoutManager = LinearLayoutManager(this@MatchesActivity, RecyclerView.VERTICAL, false)
             adapter = matchesAdapter
         }
-        matchesAdapter.acceptBtnClick = { viewModel.updateStatus(it, true) }
-        matchesAdapter.declineBtnClick = { viewModel.updateStatus(it, false) }
+        matchesAdapter.run {
+            acceptBtnClick = { viewModel.updateStatus(it, true) }
+            declineBtnClick = { viewModel.updateStatus(it, false) }
+        }
     }
 
     private fun fetchMatches() {
@@ -55,6 +57,4 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>() {
             }
         })
     }
-
-
 }

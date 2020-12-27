@@ -14,7 +14,7 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity() {
 
     private var baseViewModel: BaseViewModel? = null
 
-    abstract var getViewModel: BaseViewModel
+    abstract fun getViewModel(): BaseViewModel
 
     var viewBinding: VB? = null
 
@@ -24,7 +24,7 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        baseViewModel = getViewModel
+        baseViewModel = getViewModel()
         activityBaseBinding = DataBindingUtil.setContentView(this, R.layout.activity_base)
         activityBaseBinding?.executePendingBindings()
         activityBaseBinding?.lifecycleOwner = this
