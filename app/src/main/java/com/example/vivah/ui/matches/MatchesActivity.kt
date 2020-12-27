@@ -11,7 +11,6 @@ import com.example.vivah.ui.base.BaseActivity
 import com.example.vivah.ui.base.BaseViewModel
 import com.example.vivah.util.Resource
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class MatchesActivity : BaseActivity<ActivityMatchesBinding>() {
 
@@ -25,7 +24,6 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Timber.d("flow  oncreate")
         setRecyclerView()
         initObserver()
     }
@@ -46,9 +44,7 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>() {
     }
 
     private fun matchesObserver() {
-        Timber.d("flow fetch matches")
         viewModel.getMatches().observe(this, {
-            Timber.d("flow resource received")
             when (it) {
                 is Resource.Success -> {
                     viewModel.showProgressBar.value = false
@@ -59,19 +55,8 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>() {
                     viewModel.showProgressBar.value = false
                     Toast.makeText(this, "${it.message}", Toast.LENGTH_LONG).show()
                 }
-                is Resource.Loading -> {
-                }
+                else -> Unit
             }
         })
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Timber.d("flow onstop")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Timber.d("flow onDestroy")
     }
 }
