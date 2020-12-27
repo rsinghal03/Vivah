@@ -15,6 +15,9 @@ data class Matches(
     @SerializedName("isAccepted")
     val statusIsAccepted: Boolean? = null, //
     @SerializedName("largePhoto")
-    val photo: String
+    val photo: String,
+    val age: Int,
+    val city: String,
+    val state: String
 )
 

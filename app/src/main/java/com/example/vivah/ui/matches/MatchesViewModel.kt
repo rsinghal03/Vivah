@@ -1,26 +1,25 @@
 package com.example.vivah.ui.matches
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
-import com.example.vivah.db.model.MatchesResponse
+import androidx.lifecycle.asLiveData
+import com.example.vivah.db.entity.Matches
 import com.example.vivah.repository.MatchesRepository
 import com.example.vivah.ui.base.BaseViewModel
 import com.example.vivah.util.Resource
-import timber.log.Timber
+import kotlinx.coroutines.launch
 
 class MatchesViewModel(private val matchesRepository: MatchesRepository) : BaseViewModel() {
 
 
-    fun getMatches(): LiveData<Resource<List<MatchesResponse.Result>>> {
+    fun getMatches(): LiveData<Resource<List<Matches>?>> {
         showProgressBar.value = true
-        return liveData {
-            Timber.d("%sthread livedatascope", Thread.currentThread().name)
-            try {
-                emit(Resource.success(matchesRepository.getMatches()))
-            } catch (exception: Exception) {
-                emit(Resource.error(data = null, message = exception.message ?: "Error ocurred"))
-            }
-        }
+        matchesRepository.getMatches()
+        return matchesRepository.flow.asLiveData()
     }
 
+    fun updateStatus(it: Matches, status: Boolean) {
+        ioDispatcher.launch {
+            matchesRepository.updateMatchesStatus(it.id, status)
+        }
+    }
 }

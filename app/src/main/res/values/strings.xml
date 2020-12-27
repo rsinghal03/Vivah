@@ -2,4 +2,6 @@
     <string name="app_name">Vivah</string>
     <string name="accept">Accept</string>
     <string name="decline">Decline</string>
+    <string name="request_accepted">Request Accepted</string>
+    <string name="request_decline">Request Decline</string>
 </resources>

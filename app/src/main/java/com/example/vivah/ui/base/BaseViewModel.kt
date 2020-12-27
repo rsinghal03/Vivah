@@ -11,5 +11,5 @@ abstract class BaseViewModel : ViewModel(), KoinComponent {
 
     val showProgressBar = SingleLiveEvent<Boolean>()
 
-    private val ioDispatcher: CoroutineScope by inject(named("IO"))
+    val ioDispatcher: CoroutineScope by inject(named("IO"))
 }

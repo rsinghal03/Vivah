@@ -33,19 +33,25 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>() {
             layoutManager = LinearLayoutManager(this@MatchesActivity, RecyclerView.VERTICAL, false)
             adapter = matchesAdapter
         }
-
+        matchesAdapter.acceptBtnClick = { viewModel.updateStatus(it, true) }
+        matchesAdapter.declineBtnClick = { viewModel.updateStatus(it, false) }
     }
 
     private fun fetchMatches() {
         viewModel.getMatches().observe(this, {
-            viewModel.showProgressBar.value = false
+
             when (it.status) {
                 Status.SUCCESS -> {
+                    viewModel.showProgressBar.value = false
                     viewBinding?.matchesRecyclerView?.visible()
                     matchesAdapter.updateList(it.data)
                     Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
                 }
                 Status.ERROR -> {
+                    viewModel.showProgressBar.value = false
+                    Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
+                }
+                Status.LOADING -> {
                 }
             }
         })
