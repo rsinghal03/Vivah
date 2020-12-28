@@ -6,3 +6,4 @@ Dependecy injection is done using Koin.
 Web service call is made using Retrofit.
 Roomdata base to manage local database.
 Coroutine is used to make async call.
+Test cases is written using junit4 and mockk.
